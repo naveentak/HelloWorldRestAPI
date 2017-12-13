@@ -1,0 +1,5856 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "Sales API",
+    "version" : "1.0.0",
+    "description" : "Sales API for Sales Optimization"
+  },
+  "paths" : {
+    "/processes/enquiries/whatifs" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "enquireWhatIfs",
+        "summary" : "do the whatif processing for homecontents and motors list",
+        "responses" : {
+          "200" : {
+            "description" : "returns the whatif processing result",
+            "schema" : {
+              "$ref" : "#/definitions/whatIfProcessResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "sequenceNumber",
+          "in" : "query",
+          "description" : "risk sequence number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "whatifoption",
+          "type" : "string",
+          "required" : false,
+          "description" : "what if option. required for motors"
+        }, {
+          "in" : "query",
+          "name" : "riskGroup",
+          "type" : "string",
+          "required" : false,
+          "description" : "risk group. required for homecontents"
+        } ]
+      }
+    },
+    "/processes/actions/underwritings" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "doUnderwritings",
+        "summary" : "do the underwriting based on the query parameters.",
+        "responses" : {
+          "200" : {
+            "description" : "returns the underwriting result",
+            "schema" : {
+              "$ref" : "#/definitions/underwritingResult"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "sequenceNumber",
+          "in" : "query",
+          "description" : "risk sequence number",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "action",
+          "type" : "string",
+          "enum" : [ "SUMMARY", "STATUS", "DETAILS" ],
+          "required" : false,
+          "description" : "type of underwriting"
+        }, {
+          "in" : "query",
+          "name" : "companyCode",
+          "type" : "string",
+          "required" : true,
+          "description" : "company code."
+        } ]
+      }
+    },
+    "/processes/calculations/premiums" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "calculatePremium",
+        "summary" : "calculate the premium based on the qparam",
+        "responses" : {
+          "200" : {
+            "description" : "returns the calculated premium",
+            "schema" : {
+              "$ref" : "#/definitions/premiumResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "sequenceNumber",
+          "in" : "query",
+          "description" : "risk sequence number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "riskType",
+          "type" : "string",
+          "required" : false,
+          "description" : "risk type"
+        }, {
+          "in" : "query",
+          "name" : "autoAmend",
+          "type" : "boolean",
+          "default" : false,
+          "required" : false,
+          "description" : "if premium should be updated on the quote or not."
+        } ]
+      }
+    },
+    "/processes/enquiries/inspections" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "checkInspections",
+        "summary" : "checks the inspections and installation on the vehicles.",
+        "responses" : {
+          "200" : {
+            "description" : "returns the insepction and installation status of vehicles.",
+            "schema" : {
+              "$ref" : "#/definitions/inspectionResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "sequenceNumber",
+          "in" : "query",
+          "description" : "risk sequence number",
+          "required" : true,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/processes/enquiries/vehicles" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "getActiveSuspendedVehicleList",
+        "summary" : "returns the list of active and suspended vehicles for the quote.",
+        "responses" : {
+          "200" : {
+            "description" : "returns the list of active and suspended vehicles for the quote.",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/vehicleResponse"
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "type of vehicle",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "ACTIVE", "ALL", "SUSPENDED" ],
+          "default" : "ALL"
+        } ]
+      }
+    },
+    "/processes/enquiries/drivers" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "getDisallowedDrivers",
+        "summary" : "returns the disallowed drivers for this vehicle",
+        "responses" : {
+          "200" : {
+            "description" : "returns the disallowed drivers for this vehicle",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/disallowedDriverList"
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "sequenceNumber",
+          "in" : "query",
+          "description" : "risk sequence number",
+          "required" : true,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/processes/enquiries/excesslist" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "getVehicleExcessList",
+        "summary" : "returns the excess list for the vehicle",
+        "responses" : {
+          "200" : {
+            "description" : "returns the excess list for the vehicle",
+            "schema" : {
+              "$ref" : "#/definitions/excessList"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "sequenceNumber",
+          "in" : "query",
+          "description" : "vehicle sequence number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "accidentType",
+          "in" : "query",
+          "description" : "accidentType",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "coverType",
+          "in" : "query",
+          "description" : "risk cover type",
+          "required" : true,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/processes/enquiries/carhireevents" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "getCarHireEventList",
+        "summary" : "returns the list of car hire.",
+        "responses" : {
+          "200" : {
+            "description" : "returns the list of car hire.",
+            "schema" : {
+              "$ref" : "#/definitions/carHireEventResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "accidentCover",
+          "in" : "query",
+          "description" : "accident cover indicator",
+          "required" : true,
+          "type" : "boolean",
+          "default" : true
+        }, {
+          "name" : "thirdParty",
+          "in" : "query",
+          "description" : "third party indicator",
+          "required" : true,
+          "type" : "boolean",
+          "default" : true
+        }, {
+          "name" : "totalLoss",
+          "in" : "query",
+          "description" : "total loss cover",
+          "required" : true,
+          "type" : "boolean",
+          "default" : true
+        }, {
+          "name" : "coverType",
+          "in" : "query",
+          "description" : "cover type",
+          "required" : true,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/processes/enquiries/vehiclecovers" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "getVehicleCoverTypes",
+        "summary" : "returns the cover types for vehicle",
+        "responses" : {
+          "200" : {
+            "description" : "returns the cover types for vehicle",
+            "schema" : {
+              "$ref" : "#/definitions/vehicleUseResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "vehicleKey",
+          "in" : "query",
+          "description" : "regular driver sequence number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "financed",
+          "in" : "query",
+          "description" : "indicator whether the vehicle is financed or not",
+          "required" : true,
+          "type" : "boolean",
+          "default" : true
+        }, {
+          "name" : "langId",
+          "in" : "query",
+          "description" : "language indicator",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "EN", "AF" ],
+          "default" : "EN"
+        } ]
+      }
+    },
+    "/processes/enquiries/antithefts" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "getAntitheftList",
+        "summary" : "returns the antitheft requirement details for vehicle",
+        "responses" : {
+          "200" : {
+            "description" : "returns the antitheft requirement details for vehicle.",
+            "schema" : {
+              "$ref" : "#/definitions/antitheftResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "sequenceNumber",
+          "in" : "query",
+          "description" : "risk sequence number",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "flag",
+          "in" : "query",
+          "description" : "flag",
+          "required" : false,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/processes/enquiries/absoluteantithefts/{effectiveDate}/{newBusiness}/{suburbSequence}/{vehicleKey}" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "isVehicleAbsoluteAntiTheft",
+        "summary" : "returns the absolute antitheft requirement details for vehicle",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/isVehicleAbsoluteAntiTheftResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "effectiveDate",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "newBusiness",
+          "in" : "path",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "suburbSequence",
+          "in" : "path",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "vehicleKey",
+          "in" : "path",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        } ]
+      }
+    },
+    "/processes/enquiries/absoulteantithefts/{referenceNumber}/{vehicleSequenceNumber}" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "isReferenceVehicleAbsoluteAntiTheft",
+        "summary" : "returns the absolute antitheft requirement details for reference vehicle",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/isReferenceVehicleAbsoluteAntiTheftResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "vehicleSequenceNumber",
+          "in" : "path",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "policyCompany",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        } ]
+      }
+    },
+    "/{referenceNumber}/persons/{personNumber}/claims/history" : {
+      "post" : {
+        "tags" : [ "claims" ],
+        "operationId" : "addPersonClaimHistoryDetail",
+        "summary" : "adds person claim history detail",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/addPerclaimhistorydetailresponse"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "addpersonclaimhistorydetail",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/addPerClaimHistoryDetailrequest"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : true,
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : true,
+          "description" : "Oauth2 Bearer Token."
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : false,
+          "description" : "The system/component/service name of the requester/publisher"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : false,
+          "description" : "Populated by publisher/requester at the time the message is published or sent"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : false,
+          "description" : "The identity of the requesting user"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : false,
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "number",
+          "format" : "string",
+          "required" : false,
+          "description" : "A unique identifier (UID) which identifies this specific message instance"
+        }, {
+          "name" : "personNumber",
+          "in" : "path",
+          "description" : "person number",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        } ]
+      },
+      "put" : {
+        "tags" : [ "claims" ],
+        "operationId" : "setPersonClaimHistory",
+        "summary" : "set Person Claim History",
+        "responses" : {
+          "202" : {
+            "description" : "Request has been successfully accepted"
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            },
+            "headers" : {
+              "correlationId" : {
+                "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+                "type" : "string"
+              },
+              "messageId" : {
+                "description" : "message id for the repsonse",
+                "type" : "string"
+              },
+              "publishUTC" : {
+                "description" : "Populated by publisher/requester at the time the message is published or sent",
+                "type" : "string"
+              },
+              "businessSystem" : {
+                "description" : "The system/component/service name of the requester/publisher",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Add Endorsement",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "personNumber",
+          "in" : "path",
+          "description" : "person number",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "claimInfo",
+          "in" : "body",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/claims"
+            }
+          },
+          "description" : "claim info object to add",
+          "required" : true
+        } ]
+      }
+    },
+    "/{referenceNumber}/persons/{personNumber}/claims/insured" : {
+      "post" : {
+        "tags" : [ "claims" ],
+        "operationId" : "addPersonInsuredHistoryforVehicle",
+        "summary" : "adds person insured history for vehicle",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "addpersoninsuredhistoryforvehicle",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/addPerInsHstForVehRequest"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : true,
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : true,
+          "description" : "Oauth2 Bearer Token."
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : false,
+          "description" : "The system/component/service name of the requester/publisher"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : false,
+          "description" : "Populated by publisher/requester at the time the message is published or sent"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : false,
+          "description" : "The identity of the requesting user"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : false,
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "number",
+          "format" : "string",
+          "required" : false,
+          "description" : "A unique identifier (UID) which identifies this specific message instance"
+        }, {
+          "name" : "personNumber",
+          "in" : "path",
+          "description" : "person number",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        } ]
+      }
+    },
+    "/processes/enquiries/vehicleuses" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "getVehicleUseList",
+        "summary" : "returns the list of vehicle use",
+        "responses" : {
+          "200" : {
+            "description" : "returns the list of vehicle use",
+            "schema" : {
+              "$ref" : "#/definitions/vehicleUseResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "driverSeqNumber",
+          "in" : "query",
+          "description" : "regular driver sequence number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "policy reference number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "vehicleKey",
+          "in" : "query",
+          "description" : "vehicle key",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "langId",
+          "in" : "query",
+          "description" : "language indicator",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "EN", "AF" ],
+          "default" : "EN"
+        } ]
+      }
+    },
+    "/processes/enquiries/liabilities" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "getVehicleLiabilityList",
+        "summary" : "returns the list of liabilities.",
+        "responses" : {
+          "200" : {
+            "description" : "returns the list of liabilities.",
+            "schema" : {
+              "$ref" : "#/definitions/vehicleLiabilityResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "sequenceNumber",
+          "in" : "query",
+          "description" : "risk sequence number",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "coverType",
+          "in" : "query",
+          "description" : "cover type",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "financed",
+          "in" : "query",
+          "description" : "indicator whether the vehicle is financed or not.",
+          "required" : true,
+          "type" : "boolean",
+          "default" : true
+        } ]
+      }
+    },
+    "/enquiries/exist" : {
+      "get" : {
+        "tags" : [ "people" ],
+        "summary" : "returns the user profile status of the person",
+        "operationId" : "checkIfUserProfileExists",
+        "description" : "returns the user profile status",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/userProfileResponse"
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "emailAddress",
+          "in" : "query",
+          "description" : "Search by email address",
+          "required" : true,
+          "type" : "string",
+          "format" : "double"
+        } ]
+      }
+    },
+    "/enquiries" : {
+      "get" : {
+        "tags" : [ "people" ],
+        "summary" : "returns the response for enquiry",
+        "operationId" : "enquireClientDetails",
+        "description" : "returns the response for enquiry",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/enquiryResponse"
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "companyCode",
+          "in" : "query",
+          "description" : "policy company code",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "title",
+          "in" : "query",
+          "description" : "client title",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "dateOfBirth",
+          "in" : "query",
+          "description" : "client date of birth",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "initials",
+          "in" : "query",
+          "description" : "client initials",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "surName",
+          "in" : "query",
+          "description" : "client surname",
+          "required" : false,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/quotes" : {
+      "post" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "addQuote",
+        "summary" : "Adds a quote.",
+        "responses" : {
+          "200" : {
+            "description" : "Quote created.",
+            "schema" : {
+              "$ref" : "#/definitions/quoteResponse"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Add a Quote.",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "quote",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/addQuoteRequest"
+          },
+          "description" : "Quote object to add",
+          "required" : true
+        } ]
+      }
+    },
+    "/quotes/{quoteId}" : {
+      "get" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "getQuote",
+        "summary" : "returns the quote by QuoteId.",
+        "responses" : {
+          "200" : {
+            "description" : "Quote data.",
+            "schema" : {
+              "$ref" : "#/definitions/getQuoteResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "quoteId",
+          "in" : "path",
+          "description" : "id of the Quote.",
+          "required" : true,
+          "type" : "string"
+        } ]
+      },
+      "put" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "updateQuoteDetails",
+        "summary" : "Update Quote details.",
+        "responses" : {
+          "200" : {
+            "description" : "quote updated.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Updates Quote details.",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "quoteId",
+          "in" : "path",
+          "description" : "lead reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "quoteDetails",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/updateQuoteDetails"
+          },
+          "description" : "Quote details",
+          "required" : true
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Quotes" ],
+        "summary" : "Deletes a Quote.",
+        "description" : "",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "OAuth2 token pre shared with Encentivise or obtained by calling authentication services.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The user name of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "quoteId",
+          "in" : "path",
+          "description" : "id of the Quote",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Quote Deleted",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            },
+            "headers" : {
+              "correlationId" : {
+                "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+                "type" : "string"
+              },
+              "messageId" : {
+                "description" : "message id for the repsonse",
+                "type" : "string"
+              },
+              "publishUTC" : {
+                "description" : "Populated by publisher/requester at the time the message is published or sent",
+                "type" : "string"
+              },
+              "businessSystem" : {
+                "description" : "The system/component/service name of the requester/publisher",
+                "type" : "string"
+              }
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            },
+            "headers" : {
+              "correlationId" : {
+                "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+                "type" : "string"
+              },
+              "messageId" : {
+                "description" : "message id for the repsonse",
+                "type" : "string"
+              },
+              "publishUTC" : {
+                "description" : "Populated by publisher/requester at the time the message is published or sent",
+                "type" : "string"
+              },
+              "businessSystem" : {
+                "description" : "The system/component/service name of the requester/publisher",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "operationId" : "deleteQuote"
+      }
+    },
+    "/quotes/{referenceNumber}/premiums" : {
+      "get" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "getPremium",
+        "summary" : "returns the caluclated premium for the Quote.",
+        "responses" : {
+          "200" : {
+            "description" : "caluclated premium for the quote.",
+            "schema" : {
+              "$ref" : "#/definitions/premiumResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "reference number of the quote.",
+          "required" : true,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/{referenceNumber}/adminfee" : {
+      "post" : {
+        "tags" : [ "Financials" ],
+        "operationId" : "addAdminFee",
+        "summary" : "Add monthly fee / commencement fee to admin fee",
+        "responses" : {
+          "202" : {
+            "description" : "Request has been accepted successfully"
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            },
+            "headers" : {
+              "correlationId" : {
+                "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+                "type" : "string"
+              },
+              "messageId" : {
+                "description" : "message id for the repsonse",
+                "type" : "string"
+              },
+              "publishUTC" : {
+                "description" : "Populated by publisher/requester at the time the message is published or sent",
+                "type" : "string"
+              },
+              "businessSystem" : {
+                "description" : "The system/component/service name of the requester/publisher",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Adds a Armed Alarm Comments",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "adminFee",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/adminFee"
+          },
+          "description" : "adminFee object to add",
+          "required" : true
+        } ]
+      },
+      "put" : {
+        "tags" : [ "Financials" ],
+        "operationId" : "changeAdmFeewStartDate",
+        "summary" : "Change monthly admin fee start date",
+        "responses" : {
+          "202" : {
+            "description" : "Request has been accepted successfully"
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            },
+            "headers" : {
+              "correlationId" : {
+                "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+                "type" : "string"
+              },
+              "messageId" : {
+                "description" : "message id for the repsonse",
+                "type" : "string"
+              },
+              "publishUTC" : {
+                "description" : "Populated by publisher/requester at the time the message is published or sent",
+                "type" : "string"
+              },
+              "businessSystem" : {
+                "description" : "The system/component/service name of the requester/publisher",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Adds a Armed Alarm Comments",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "adminFee",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/changeAdminFeeDateRequest"
+          },
+          "description" : "adminFee Start Date to update",
+          "required" : true
+        } ]
+      },
+      "get" : {
+        "tags" : [ "Financials" ],
+        "operationId" : "getadminfee",
+        "description" : "Get monthly fee / commencement fee to admin fee",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/emptyResponse"
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "Search by reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "double"
+        }, {
+          "name" : "newStartDate",
+          "in" : "query",
+          "type" : "string",
+          "description" : "New Start Date",
+          "format" : "string"
+        } ]
+      }
+    },
+    "/quotes/{quoteId}/transactions" : {
+      "post" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "addLeadTransactions",
+        "summary" : "adds transaction record for a quote.",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a transactions",
+        "parameters" : [ {
+          "required" : true,
+          "name" : "quoteId",
+          "in" : "path",
+          "type" : "string",
+          "description" : "lead reference number",
+          "format" : "string"
+        }, {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/addLeadTransactionRequest"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : true,
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : true,
+          "description" : "Oauth2 Bearer Token."
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "description" : "The system/component/service name of the requester/publisher"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "description" : "The identity of the requesting user"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "number",
+          "format" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance"
+        } ]
+      }
+    },
+    "/quotes/{quoteId}/status" : {
+      "put" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "updateBusyStatus",
+        "summary" : "updates the busy status of a quote.",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Update Lead Busy Status",
+        "parameters" : [ {
+          "required" : true,
+          "name" : "quoteId",
+          "in" : "path",
+          "type" : "string",
+          "description" : "lead reference number"
+        }, {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/updateBusyStatusRequest"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "required" : true,
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "format" : "string",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance"
+        } ]
+      }
+    },
+    "/{referenceNumber}/consents" : {
+      "post" : {
+        "tags" : [ "consents" ],
+        "operationId" : "addConsent",
+        "summary" : "adds a marketing or communication consent",
+        "responses" : {
+          "200" : {
+            "description" : "consent added.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "adds a marketing or communication consent",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "consent type",
+          "required" : true,
+          "type" : "string",
+          "default" : "MARKETING",
+          "enum" : [ "MARKETING", "COMMUNICATION" ]
+        }, {
+          "name" : "consent",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/addConsentRequest"
+          },
+          "description" : "consent data",
+          "required" : true
+        } ]
+      },
+      "put" : {
+        "tags" : [ "consents" ],
+        "operationId" : "updateConsent",
+        "summary" : "updates a marketing or communication consent",
+        "responses" : {
+          "200" : {
+            "description" : "consent updated.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "updates a marketing or communication consent",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "consent type",
+          "required" : true,
+          "type" : "string",
+          "default" : "MARKETING",
+          "enum" : [ "MARKETING", "COMMUNICATION" ]
+        }, {
+          "name" : "consent",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/addConsentRequest"
+          },
+          "description" : "consent data",
+          "required" : true
+        } ]
+      },
+      "get" : {
+        "tags" : [ "consents" ],
+        "operationId" : "getConsents",
+        "summary" : "returns the policy consents",
+        "responses" : {
+          "200" : {
+            "description" : "returns the policy consents",
+            "schema" : {
+              "$ref" : "#/definitions/addConsentRequest"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            },
+            "headers" : {
+              "correlationId" : {
+                "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+                "type" : "string"
+              },
+              "messageId" : {
+                "description" : "message id for the repsonse",
+                "type" : "string"
+              },
+              "publishUTC" : {
+                "description" : "Populated by publisher/requester at the time the message is published or sent",
+                "type" : "string"
+              },
+              "businessSystem" : {
+                "description" : "The system/component/service name of the requester/publisher",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "Address reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "addressType",
+          "in" : "query",
+          "type" : "string",
+          "enum" : [ "P", "R" ],
+          "required" : true,
+          "description" : "(P)- Postal Address, (R)-Risk Address"
+        } ]
+      }
+    },
+    "/{referenceNumber}/masterui" : {
+      "put" : {
+        "tags" : [ "policies" ],
+        "operationId" : "updateMasterUI",
+        "summary" : "updates the master ui data",
+        "responses" : {
+          "200" : {
+            "description" : "details updated.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "updates master ui data",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "masterui",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/masterui"
+          },
+          "description" : "masterui data.",
+          "required" : true
+        } ]
+      },
+      "get" : {
+        "tags" : [ "policies" ],
+        "operationId" : "getMasterUI",
+        "summary" : "returns the masterui data.",
+        "responses" : {
+          "200" : {
+            "description" : "returns the masterui data",
+            "schema" : {
+              "$ref" : "#/definitions/masterui"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            },
+            "headers" : {
+              "correlationId" : {
+                "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+                "type" : "string"
+              },
+              "messageId" : {
+                "description" : "message id for the repsonse",
+                "type" : "string"
+              },
+              "publishUTC" : {
+                "description" : "Populated by publisher/requester at the time the message is published or sent",
+                "type" : "string"
+              },
+              "businessSystem" : {
+                "description" : "The system/component/service name of the requester/publisher",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "description" : "policy reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        } ]
+      }
+    },
+    "/buildings/calculatenmncb" : {
+      "get" : {
+        "tags" : [ "nonMotors" ],
+        "operationId" : "calculateNMNCB",
+        "description" : "Calculate NMNCB",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "noClaimsDiscount" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "lastIncidentDate",
+          "in" : "header",
+          "description" : "Last Incident Date",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "dateOfMovingIn",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Date of moving in",
+          "format" : "string"
+        } ]
+      }
+    },
+    "/{referencenumber}/dounderwriting" : {
+      "get" : {
+        "tags" : [ "underWriting" ],
+        "operationId" : "doUnderWriting",
+        "description" : "Get Under Writing information",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/underWritingResponse"
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "referencenumber",
+          "in" : "path",
+          "description" : "Search by reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "double"
+        }, {
+          "in" : "query",
+          "name" : "action",
+          "type" : "string",
+          "enum" : [ "DOBUILDING", "DOQHMECONTENT", "DOUHMECONTENT" ],
+          "required" : false,
+          "description" : "type of underwriting"
+        }, {
+          "name" : "autoAmend",
+          "in" : "query",
+          "type" : "string",
+          "description" : "AUTOAMEND",
+          "format" : "string"
+        } ]
+      }
+    },
+    "/{referencenumber}/underwriting/information" : {
+      "get" : {
+        "tags" : [ "underWriting" ],
+        "operationId" : "getUnderWritingInformation",
+        "description" : "Get Under Writing Options information",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/uwInformation"
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "referencenumber",
+          "in" : "path",
+          "description" : "Search by reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "double"
+        }, {
+          "name" : "riskGroup",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Risk Group",
+          "format" : "string"
+        }, {
+          "name" : "riskSequenceNumber",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Risk equence Number",
+          "format" : "string"
+        } ]
+      }
+    },
+    "/{referencenumber}/guiltypartylist/{personnumber}" : {
+      "get" : {
+        "tags" : [ "people" ],
+        "operationId" : "getGuiltyPartyList",
+        "summary" : "returns the guilty party list",
+        "responses" : {
+          "200" : {
+            "description" : "returns the guilty party list",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "properties" : {
+                  "code" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            },
+            "headers" : {
+              "correlationId" : {
+                "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+                "type" : "string"
+              },
+              "messageId" : {
+                "description" : "message id for the repsonse",
+                "type" : "string"
+              },
+              "publishUTC" : {
+                "description" : "Populated by publisher/requester at the time the message is published or sent",
+                "type" : "string"
+              },
+              "businessSystem" : {
+                "description" : "The system/component/service name of the requester/publisher",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referencenumber",
+          "in" : "path",
+          "description" : "reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "personnumber",
+          "in" : "path",
+          "description" : "person number",
+          "required" : true,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/{referenceNumber}/persons/{personNumber}/claims/{claimHistorySeqNo}/history" : {
+      "delete" : {
+        "tags" : [ "nonMotors" ],
+        "operationId" : "deletePersonClaimHistory",
+        "summary" : "delete person claim history information",
+        "responses" : {
+          "202" : {
+            "description" : "Delete person claim history request has been accepted",
+            "schema" : {
+              "$ref" : "#/definitions/emptyResponse"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "personNumber",
+          "in" : "path",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        }, {
+          "name" : "claimHistorySeqNo",
+          "in" : "path",
+          "required" : true,
+          "type" : "number",
+          "format" : "double"
+        } ]
+      }
+    },
+    "/quotes/{referencenumber}/details" : {
+      "get" : {
+        "tags" : [ "Quotes" ],
+        "summary" : "returns the different type of quote details based on the type of detail requested.",
+        "operationId" : "getQuoteDetails",
+        "description" : "return the quote information",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/quoteDetailsResponse"
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "referencenumber",
+          "in" : "path",
+          "description" : "Quote reference number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "filter type",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "coverOptions", "referralSummary" ]
+        } ]
+      }
+    },
+    "/quotes/{referenceNumber}/finish" : {
+      "post" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "endOfSale",
+        "summary" : "complete the Sales process for quote.",
+        "responses" : {
+          "202" : {
+            "description" : "Request accepted.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "complete the Sales process for quote.",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "quoteData",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/endOfSaleRequest"
+          },
+          "description" : "referal data",
+          "required" : true
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "type" : "string",
+          "description" : "reference number of the quote.",
+          "required" : true
+        } ]
+      }
+    },
+    "/quotes/{referenceNumber}/referals" : {
+      "post" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "sendToReferal",
+        "summary" : "send the quote to referal",
+        "responses" : {
+          "202" : {
+            "description" : "Request accepted.",
+            "schema" : {
+              "$ref" : "#/definitions/api_response"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "send the quote to referal",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "referalData",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/referalRequest"
+          },
+          "description" : "referal data",
+          "required" : true
+        }, {
+          "name" : "referenceNumber",
+          "in" : "path",
+          "type" : "string",
+          "description" : "reference number of the quote.",
+          "required" : true
+        } ]
+      }
+    },
+    "/quotes/multiQuote" : {
+      "post" : {
+        "tags" : [ "Quotes" ],
+        "operationId" : "getMultiQuote",
+        "summary" : "retrieve multiple quotes.",
+        "responses" : {
+          "202" : {
+            "description" : "Request accepted.",
+            "schema" : {
+              "$ref" : "#/definitions/multiQuoteResponse"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "retrieve multiple quotes.",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "quoteData",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/multiQuoteRequest"
+          },
+          "description" : "referal data",
+          "required" : true
+        } ]
+      }
+    },
+    "/runluhnalgorithm/{alphaNumber}" : {
+      "get" : {
+        "tags" : [ "Financials" ],
+        "operationId" : "runluhnAlgorithm",
+        "summary" : "validate the credit card number",
+        "responses" : {
+          "200" : {
+            "description" : "returns the runluhnalgorithm result",
+            "schema" : {
+              "$ref" : "#/definitions/runluhnAlgorithmResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "alphaNumber",
+          "in" : "path",
+          "description" : "alphaNumber",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        } ]
+      }
+    },
+    "/enquiries/lead" : {
+      "get" : {
+        "tags" : [ "Enquiries" ],
+        "summary" : "type of enquiry to be done on a lead/quote.",
+        "operationId" : "enquireLead",
+        "description" : "returns the enquiry detail for the lead.",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/leadAccessCoverResponse"
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "number",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "referenceNumber",
+          "in" : "query",
+          "description" : "lead reference number",
+          "required" : true,
+          "type" : "string",
+          "format" : "double"
+        }, {
+          "name" : "enquiryType",
+          "in" : "query",
+          "description" : "type of enquiry.",
+          "required" : true,
+          "type" : "string",
+          "enum" : [ "accessibility", "coverStatus" ]
+        } ]
+      }
+    },
+    "/processes/enquiries/insurancedetailvalid" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "insuranceDetailValid",
+        "summary" : "returns the insurace valid status.",
+        "responses" : {
+          "200" : {
+            "description" : "returns the is insurance detail valid.",
+            "schema" : {
+              "$ref" : "#/definitions/insurancedetailvalidResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "branchName",
+          "in" : "query",
+          "description" : "Branch Name.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "cancellationDate",
+          "in" : "query",
+          "description" : "Cancellation Date",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "cancellationReason",
+          "in" : "query",
+          "description" : "cover type",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "CompanyBranch",
+          "in" : "query",
+          "description" : "Company Branch.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "CompanyCode",
+          "in" : "query",
+          "description" : "CompanyCode.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "companyName",
+          "in" : "query",
+          "description" : "indicator whether the vehicle is financed or not.",
+          "required" : true,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/processes/enquiries/claimhistorydatevalid" : {
+      "get" : {
+        "tags" : [ "Processes" ],
+        "operationId" : "claimHistoryDateValid",
+        "summary" : "returns the claim history date valid status.",
+        "responses" : {
+          "200" : {
+            "description" : "returns claim history date valid.",
+            "schema" : {
+              "$ref" : "#/definitions/claimhistorydatevalidResponse"
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "required" : true,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "description" : "The system/component/service name of the requester/publisher",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "description" : "The identity of the requesting user",
+          "required" : false,
+          "type" : "string",
+          "format" : "string"
+        }, {
+          "name" : "claimDate",
+          "in" : "query",
+          "description" : "claim Date.",
+          "required" : true,
+          "type" : "string"
+        } ]
+      }
+    },
+    "/enquiries/precautionlist" : {
+      "get" : {
+        "tags" : [ "Enquiries" ],
+        "summary" : "retrieves the precaution list details.",
+        "operationId" : "precautionList",
+        "description" : "retrieves the precaution list details.",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/precautionlistResponse"
+            }
+          },
+          "default" : {
+            "description" : "The operation was unsuccessful.",
+            "schema" : {
+              "$ref" : "#/definitions/api_error"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "type" : "number",
+          "description" : "Oauth2 Bearer Token.",
+          "required" : true,
+          "format" : "string"
+        }, {
+          "name" : "correlationId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "This is a process correlation Id which all messages related to the same logical business process instance should carry",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "publishUTC",
+          "in" : "header",
+          "type" : "string",
+          "description" : "Populated by publisher/requester at the time the message is published or sent",
+          "format" : "string"
+        }, {
+          "name" : "source",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The system/component/service name of the requester/publisher",
+          "format" : "string"
+        }, {
+          "name" : "userName",
+          "in" : "header",
+          "type" : "string",
+          "description" : "The identity of the requesting user",
+          "format" : "string",
+          "required" : true
+        }, {
+          "name" : "messageType",
+          "in" : "header",
+          "type" : "string",
+          "description" : "When present indicates the type of message and determines the schema that the message payload conforms to",
+          "format" : "string"
+        }, {
+          "name" : "messageId",
+          "in" : "header",
+          "type" : "string",
+          "description" : "A unique identifier (UID) which identifies this specific message instance",
+          "format" : "string"
+        }, {
+          "name" : "typeCode",
+          "in" : "query",
+          "description" : "Type Code",
+          "required" : true,
+          "type" : "string",
+          "format" : "double"
+        } ]
+      }
+    }
+  },
+  "basePath" : "/api/v1/sales",
+  "definitions" : {
+    "adminFee" : {
+      "type" : "object",
+      "properties" : {
+        "feeType" : {
+          "type" : "string",
+          "enum" : [ "MONTHLYFEE", "COMMENCEMENTFEE" ]
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "amendementNumber" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "amount" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "commissionOperator" : {
+          "type" : "string"
+        },
+        "duplicatePolicy" : {
+          "type" : "string"
+        },
+        "wavePeriod" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "reasonForWaive" : {
+          "type" : "string"
+        },
+        "transactionOperator" : {
+          "type" : "string"
+        },
+        "transactionDate" : {
+          "type" : "string"
+        },
+        "busy" : {
+          "type" : "string"
+        },
+        "startDate" : {
+          "type" : "string"
+        },
+        "endDate" : {
+          "type" : "string"
+        },
+        "text" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "claims" : {
+      "type" : "object",
+      "properties" : {
+        "accidentInfo" : {
+          "$ref" : "#/definitions/accidentInfo"
+        },
+        "claimInfo" : {
+          "$ref" : "#/definitions/claimInfo"
+        }
+      }
+    },
+    "accidentInfo" : {
+      "type" : "object",
+      "properties" : {
+        "driverSeqNo" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "amendmentSequenceNumber" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "anyoneInjured" : {
+          "type" : "string"
+        },
+        "damageLevel" : {
+          "type" : "string"
+        },
+        "guiltyPartyCode" : {
+          "type" : "string"
+        },
+        "injuriesSerious" : {
+          "type" : "string"
+        },
+        "responsiblePersonSeqNo" : {
+          "type" : "number",
+          "format" : "double"
+        }
+      }
+    },
+    "claimInfo" : {
+      "type" : "object",
+      "properties" : {
+        "date" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "historySeqNo" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "loss" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "number" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "Status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "runluhnAlgorithmResponse" : {
+      "type" : "object",
+      "properties" : {
+        "remainder" : {
+          "type" : "number",
+          "format" : "double"
+        }
+      }
+    },
+    "excessList" : {
+      "type" : "object",
+      "properties" : {
+        "coverType" : {
+          "type" : "string"
+        },
+        "basicExcess" : {
+          "type" : "number"
+        },
+        "excesses" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "code" : {
+                "type" : "string"
+              },
+              "value" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "newPremiums" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "code" : {
+                "type" : "string"
+              },
+              "value" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "differences" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "code" : {
+                "type" : "string"
+              },
+              "value" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "cde" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "codeValue" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "enquiryResponse" : {
+      "type" : "object",
+      "properties" : {
+        "prohibitedSales" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "referenceNumber" : {
+                "type" : "string"
+              },
+              "name" : {
+                "type" : "string"
+              },
+              "dateOfBirth" : {
+                "type" : "string"
+              },
+              "address" : {
+                "type" : "string"
+              },
+              "company" : {
+                "type" : "string"
+              },
+              "status" : {
+                "type" : "string"
+              },
+              "commencementDate" : {
+                "type" : "string"
+              },
+              "cancellationDate" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "carHireEventResponse" : {
+      "type" : "object",
+      "properties" : {
+        "eventList" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "code" : {
+                "type" : "string"
+              },
+              "desc" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "disallowedDriverList" : {
+      "type" : "object",
+      "properties" : {
+        "sequenceNumber" : {
+          "type" : "string"
+        },
+        "drivers" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "personNumber" : {
+                "type" : "string"
+              },
+              "personId" : {
+                "type" : "string"
+              },
+              "reasonCode" : {
+                "type" : "string"
+              },
+              "reasonDesc" : {
+                "type" : "string"
+              },
+              "personDesc" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "inspectionResponse" : {
+      "type" : "object",
+      "properties" : {
+        "inspection" : {
+          "type" : "string"
+        },
+        "installation" : {
+          "type" : "string"
+        },
+        "ownTracker" : {
+          "type" : "string"
+        }
+      }
+    },
+    "vehicleLiabilityResponse" : {
+      "type" : "object",
+      "properties" : {
+        "liabilities" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "code" : {
+                "type" : "string"
+              },
+              "desc" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vehicleUseResponse" : {
+      "type" : "object",
+      "properties" : {
+        "uses" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "code" : {
+                "type" : "string"
+              },
+              "desc" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "whatIfProcessResponse" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "premiums" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/whatIfPremium"
+          }
+        }
+      }
+    },
+    "whatIfPremium" : {
+      "type" : "object",
+      "properties" : {
+        "premiumDesc" : {
+          "type" : "string"
+        },
+        "selected" : {
+          "type" : "string"
+        },
+        "premium" : {
+          "type" : "string"
+        }
+      }
+    },
+    "underwritingResult" : {
+      "type" : "object",
+      "properties" : {
+        "result" : {
+          "type" : "string"
+        },
+        "vehicleUnderwritingReason" : {
+          "$ref" : "#/definitions/vehicleUnderwriting"
+        },
+        "vehicleUnderwritingSummary" : {
+          "type" : "object",
+          "properties" : {
+            "uwStatus" : {
+              "type" : "string"
+            },
+            "decisoinDate" : {
+              "type" : "string"
+            },
+            "operator" : {
+              "type" : "string"
+            },
+            "operatorWhoMadeDecision" : {
+              "type" : "string"
+            },
+            "uwDecision" : {
+              "type" : "string"
+            },
+            "uwDone" : {
+              "type" : "string"
+            },
+            "uwResult" : {
+              "type" : "string"
+            }
+          }
+        },
+        "errors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/error"
+          }
+        }
+      }
+    },
+    "vehicleUnderwriting" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "type" : "string"
+        },
+        "reasons" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/uwReason"
+          }
+        }
+      }
+    },
+    "uwReason" : {
+      "type" : "object",
+      "properties" : {
+        "reasonCode" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "result" : {
+          "type" : "string"
+        }
+      }
+    },
+    "premiumResponse" : {
+      "type" : "object",
+      "properties" : {
+        "calculatedPremium" : {
+          "type" : "number"
+        },
+        "returnStatus" : {
+          "type" : "string"
+        },
+        "errors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/error"
+          }
+        },
+        "riskPremiums" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/riskPremium"
+          }
+        }
+      }
+    },
+    "updateQuoteDetails" : {
+      "type" : "object",
+      "properties" : {
+        "quoteId" : {
+          "type" : "string"
+        },
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "quoteDetails" : {
+          "$ref" : "#/definitions/quoteDetails"
+        }
+      }
+    },
+    "quoteResponse" : {
+      "type" : "object",
+      "properties" : {
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "totalPremium" : {
+          "type" : "number"
+        },
+        "riskPremiums" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/riskPremium"
+          }
+        },
+        "errors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/error"
+          }
+        }
+      }
+    },
+    "vehicleResponse" : {
+      "type" : "object",
+      "properties" : {
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "sequenceNumber" : {
+          "type" : "number"
+        },
+        "totalPremium" : {
+          "type" : "number"
+        },
+        "riskPremiums" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/riskPremium"
+          }
+        },
+        "errors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/error"
+          }
+        }
+      }
+    },
+    "quoteDetails" : {
+      "type" : "object",
+      "properties" : {
+        "commencementDate" : {
+          "type" : "string",
+          "pattern" : "^(19|20)[0-9]{2}[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$"
+        },
+        "cancellationDate" : {
+          "type" : "string",
+          "pattern" : "^(19|20)[0-9]{2}[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$"
+        },
+        "effectiveDate" : {
+          "type" : "string",
+          "pattern" : "^(19|20)[0-9]{2}[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$"
+        },
+        "itcScore" : {
+          "type" : "number"
+        },
+        "languageId" : {
+          "type" : "string"
+        },
+        "underwriterCompanyCode" : {
+          "type" : "string"
+        },
+        "isVIPClient" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "error" : {
+      "type" : "object",
+      "properties" : {
+        "errorType" : {
+          "type" : "string"
+        },
+        "errorField" : {
+          "type" : "string"
+        },
+        "errorDescription" : {
+          "type" : "string"
+        }
+      }
+    },
+    "getQuoteResponse" : {
+      "type" : "object",
+      "properties" : {
+        "quoteId" : {
+          "type" : "string"
+        },
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "addresses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/address"
+          }
+        },
+        "agentDetails" : {
+          "type" : "object",
+          "properties" : {
+            "agentName" : {
+              "type" : "string"
+            },
+            "agentId" : {
+              "type" : "string"
+            },
+            "systemId" : {
+              "type" : "string"
+            }
+          }
+        },
+        "brandDetails" : {
+          "$ref" : "#/definitions/brandDetails"
+        },
+        "brokerDetails" : {
+          "$ref" : "#/definitions/brokerDetails"
+        },
+        "contactDetail" : {
+          "$ref" : "#/definitions/contact"
+        },
+        "nonmotors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/nonmotor"
+          }
+        },
+        "quoteDetails" : {
+          "$ref" : "#/definitions/quoteDetails"
+        },
+        "person" : {
+          "$ref" : "#/definitions/person"
+        },
+        "remarks" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "rewards" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/reward"
+          }
+        },
+        "riskPremiums" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/riskPremium"
+          }
+        },
+        "status" : {
+          "$ref" : "#/definitions/status"
+        },
+        "vehicles" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "addQuoteRequest" : {
+      "type" : "object",
+      "properties" : {
+        "quoteId" : {
+          "type" : "string"
+        },
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "totalPremium" : {
+          "type" : "number"
+        },
+        "addresses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/address"
+          }
+        },
+        "agentDetails" : {
+          "type" : "object",
+          "properties" : {
+            "agentName" : {
+              "type" : "string"
+            },
+            "agentId" : {
+              "type" : "string"
+            },
+            "systemId" : {
+              "type" : "string"
+            }
+          }
+        },
+        "brandDetails" : {
+          "$ref" : "#/definitions/brandDetails"
+        },
+        "brokerDetails" : {
+          "$ref" : "#/definitions/brokerDetails"
+        },
+        "contactDetail" : {
+          "$ref" : "#/definitions/contact"
+        },
+        "nonmotors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/nonmotor"
+          }
+        },
+        "quoteDetails" : {
+          "$ref" : "#/definitions/quoteDetails"
+        },
+        "person" : {
+          "$ref" : "#/definitions/person"
+        },
+        "remarks" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "rewards" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/reward"
+          }
+        },
+        "riskPremiums" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/riskPremium"
+          }
+        },
+        "status" : {
+          "$ref" : "#/definitions/status"
+        },
+        "vehicles" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "contact" : {
+      "type" : "object",
+      "properties" : {
+        "email" : {
+          "type" : "string"
+        },
+        "phones" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/phone"
+          }
+        }
+      }
+    },
+    "employmentDetails" : {
+      "type" : "object",
+      "properties" : {
+        "employerGroup" : {
+          "type" : "string"
+        },
+        "employerBusiness" : {
+          "type" : "string"
+        }
+      }
+    },
+    "phone" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "enum" : [ "CELL", "WORK", "HOME", "FAX" ]
+        },
+        "dialCode" : {
+          "type" : "string"
+        },
+        "number" : {
+          "type" : "string"
+        }
+      }
+    },
+    "status" : {
+      "type" : "object",
+      "properties" : {
+        "statusType" : {
+          "type" : "string"
+        },
+        "updatedAt" : {
+          "type" : "string"
+        }
+      }
+    },
+    "brokerDetails" : {
+      "type" : "object",
+      "properties" : {
+        "brokerCode" : {
+          "type" : "string"
+        },
+        "brokerGroup" : {
+          "type" : "string"
+        },
+        "vdnNumber" : {
+          "type" : "string"
+        }
+      }
+    },
+    "brandDetails" : {
+      "type" : "object",
+      "properties" : {
+        "brandId" : {
+          "type" : "string"
+        },
+        "brandName" : {
+          "type" : "string"
+        }
+      }
+    },
+    "userProfileResponse" : {
+      "type" : "object",
+      "properties" : {
+        "exists" : {
+          "type" : "string"
+        }
+      }
+    },
+    "reward" : {
+      "type" : "object"
+    },
+    "nonmotor" : {
+      "type" : "object"
+    },
+    "address" : {
+      "type" : "object",
+      "properties" : {
+        "addressType" : {
+          "type" : "string",
+          "enum" : [ "N", "D", "R" ]
+        },
+        "isResidentialAdd" : {
+          "type" : "boolean"
+        },
+        "isPostalAdd" : {
+          "type" : "boolean"
+        },
+        "coordinates" : {
+          "type" : "object",
+          "properties" : {
+            "lattitude" : {
+              "type" : "number"
+            },
+            "longitude" : {
+              "type" : "number"
+            }
+          }
+        },
+        "accessControlledType" : {
+          "type" : "string"
+        },
+        "address1" : {
+          "type" : "string"
+        },
+        "address2" : {
+          "type" : "string"
+        },
+        "address3" : {
+          "type" : "string"
+        },
+        "areaType" : {
+          "type" : "string"
+        },
+        "postalCode" : {
+          "type" : "string"
+        },
+        "suburbName" : {
+          "type" : "string"
+        },
+        "suburbSequence" : {
+          "type" : "string"
+        },
+        "province" : {
+          "type" : "string"
+        }
+      }
+    },
+    "person" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "type of person. policy holder, regular driver, dependant"
+        },
+        "initials" : {
+          "type" : "string"
+        },
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "titleCode" : {
+          "type" : "string"
+        },
+        "dateOfBirth" : {
+          "type" : "string"
+        },
+        "occupationStatus" : {
+          "type" : "string"
+        },
+        "maritalStatus" : {
+          "type" : "string"
+        },
+        "maritalStatusDesc" : {
+          "type" : "string"
+        },
+        "gender" : {
+          "type" : "string"
+        },
+        "age" : {
+          "type" : "number"
+        },
+        "spouseSeqNumber" : {
+          "type" : "string"
+        },
+        "occupationStatusDesc" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "employment" : {
+          "$ref" : "#/definitions/employmentDetails"
+        },
+        "identification" : {
+          "type" : "object",
+          "properties" : {
+            "idType" : {
+              "type" : "string"
+            },
+            "idNumber" : {
+              "type" : "string"
+            }
+          }
+        },
+        "relationship" : {
+          "type" : "object",
+          "properties" : {
+            "relationshipGroup" : {
+              "type" : "string"
+            },
+            "relationshipCode" : {
+              "type" : "string"
+            },
+            "relationshipDesc" : {
+              "type" : "string"
+            }
+          }
+        },
+        "history" : {
+          "type" : "object",
+          "properties" : {
+            "insuranceCancelled" : {
+              "type" : "string"
+            },
+            "claims" : {
+              "type" : "string"
+            },
+            "losses" : {
+              "type" : "string"
+            }
+          }
+        },
+        "licenseEndorsements" : {
+          "type" : "string"
+        },
+        "noOfLosses" : {
+          "type" : "string"
+        },
+        "lastNCBaffectingClaimDate" : {
+          "type" : "string",
+          "pattern" : "^(19|20)[0-9]{2}[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$"
+        },
+        "lastClaimsLossDate" : {
+          "type" : "string",
+          "pattern" : "^(19|20)[0-9]{2}[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$"
+        },
+        "mobileNumber" : {
+          "type" : "string"
+        }
+      }
+    },
+    "riskPremium" : {
+      "type" : "object",
+      "properties" : {
+        "riskType" : {
+          "type" : "string"
+        },
+        "riskNumber" : {
+          "type" : "number"
+        },
+        "riskPremium" : {
+          "type" : "number"
+        },
+        "basicExcess" : {
+          "type" : "number"
+        },
+        "additionalExcess" : {
+          "type" : "number"
+        },
+        "additionalExcessCode" : {
+          "type" : "string"
+        }
+      }
+    },
+    "api_error" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "http_error_code" : {
+          "type" : "string"
+        }
+      }
+    },
+    "api_response" : {
+      "type" : "object",
+      "properties" : {
+        "request_date" : {
+          "type" : "string",
+          "description" : "request received date-time in milliseconds."
+        },
+        "reference_id" : {
+          "type" : "string",
+          "description" : "reference id / correlation id  of the message posted to the api service."
+        }
+      }
+    },
+    "addLeadTransactionRequest" : {
+      "type" : "object",
+      "properties" : {
+        "systemCode" : {
+          "type" : "string"
+        },
+        "statusChange" : {
+          "type" : "string"
+        }
+      }
+    },
+    "updateBusyStatusRequest" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "type" : "string"
+        },
+        "operatorCode" : {
+          "type" : "string"
+        },
+        "operator" : {
+          "type" : "string"
+        },
+        "date" : {
+          "type" : "string"
+        },
+        "time" : {
+          "type" : "string"
+        },
+        "extension" : {
+          "type" : "string"
+        },
+        "speakingToType" : {
+          "type" : "string"
+        },
+        "speakingToSequence" : {
+          "type" : "string"
+        },
+        "speakingTo" : {
+          "type" : "string"
+        },
+        "titleCode" : {
+          "type" : "string"
+        },
+        "firstName" : {
+          "type" : "string"
+        },
+        "surname" : {
+          "type" : "string"
+        },
+        "relationshipGroup" : {
+          "type" : "string"
+        },
+        "relationshipCode" : {
+          "type" : "string"
+        },
+        "functionCode" : {
+          "type" : "string"
+        },
+        "function" : {
+          "type" : "string"
+        }
+      }
+    },
+    "addConsentRequest" : {
+      "type" : "object",
+      "properties" : {
+        "communicationConsent" : {
+          "type" : "object",
+          "properties" : {
+            "communicationType" : {
+              "type" : "string"
+            },
+            "consentType" : {
+              "type" : "string"
+            },
+            "optIn" : {
+              "type" : "string"
+            }
+          }
+        },
+        "marketingConsents" : {
+          "type" : "object",
+          "properties" : {
+            "communicationMethod" : {
+              "type" : "string",
+              "enum" : [ "POST", "EMAIL" ]
+            },
+            "creditBureau" : {
+              "$ref" : "#/definitions/consent"
+            },
+            "email" : {
+              "$ref" : "#/definitions/consent"
+            },
+            "mail" : {
+              "$ref" : "#/definitions/consent"
+            },
+            "marketing" : {
+              "$ref" : "#/definitions/consent"
+            },
+            "sms" : {
+              "$ref" : "#/definitions/consent"
+            },
+            "survey" : {
+              "$ref" : "#/definitions/consent"
+            },
+            "telephone" : {
+              "$ref" : "#/definitions/consent"
+            },
+            "weatherSMS" : {
+              "$ref" : "#/definitions/consent"
+            }
+          }
+        }
+      }
+    },
+    "consent" : {
+      "type" : "object",
+      "properties" : {
+        "opted" : {
+          "type" : "boolean"
+        },
+        "updatedOn" : {
+          "type" : "string",
+          "pattern" : "^(19|20)[0-9]{2}[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$"
+        }
+      }
+    },
+    "masterui" : {
+      "type" : "object",
+      "properties" : {
+        "busy" : {
+          "type" : "string"
+        },
+        "quoteId" : {
+          "type" : "string"
+        },
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "totalPremium" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "agentDetails" : {
+          "type" : "object",
+          "properties" : {
+            "agentName" : {
+              "type" : "string"
+            },
+            "agentId" : {
+              "type" : "string"
+            },
+            "systemId" : {
+              "type" : "string"
+            }
+          }
+        },
+        "brandDetails" : {
+          "$ref" : "#/definitions/brandDetails"
+        },
+        "brokerDetails" : {
+          "$ref" : "#/definitions/brokerDetails"
+        },
+        "leadDetails" : {
+          "type" : "object",
+          "properties" : {
+            "leadNumber" : {
+              "type" : "string"
+            },
+            "leadStatus" : {
+              "type" : "string"
+            },
+            "leadGroup" : {
+              "type" : "string"
+            },
+            "leadStatusDesc" : {
+              "type" : "string"
+            }
+          }
+        },
+        "quoteDetails" : {
+          "$ref" : "#/definitions/quoteDetails"
+        },
+        "remarks" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "status" : {
+          "$ref" : "#/definitions/status"
+        }
+      }
+    },
+    "isReferenceVehicleAbsoluteAntiTheftResponse" : {
+      "type" : "object",
+      "properties" : {
+        "bool" : {
+          "type" : "string"
+        }
+      }
+    },
+    "isVehicleAbsoluteAntiTheftResponse" : {
+      "type" : "object",
+      "properties" : {
+        "bool" : {
+          "type" : "string"
+        }
+      }
+    },
+    "underWritingResponse" : {
+      "type" : "object",
+      "properties" : {
+        "message" : {
+          "type" : "string"
+        },
+        "result" : {
+          "type" : "string"
+        }
+      }
+    },
+    "uwInformation" : {
+      "type" : "object",
+      "properties" : {
+        "uwDecision" : {
+          "type" : "string",
+          "description" : ""
+        },
+        "decisionDate" : {
+          "type" : "string",
+          "description" : ""
+        },
+        "operator" : {
+          "type" : "string",
+          "description" : ""
+        },
+        "operatorWhoMadeDecision" : {
+          "type" : "string",
+          "description" : ""
+        },
+        "underWritingDecision" : {
+          "type" : "string",
+          "description" : ""
+        },
+        "underWritingDone" : {
+          "type" : "string",
+          "description" : ""
+        },
+        "underWritingResult" : {
+          "type" : "string",
+          "description" : ""
+        }
+      }
+    },
+    "addPerclaimhistorydetailresponse" : {
+      "type" : "object",
+      "properties" : {
+        "ClaimHistorySeqNo" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "PersonNumber" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "ReferenceNumber" : {
+          "type" : "string"
+        }
+      }
+    },
+    "addPerClaimHistoryDetailrequest" : {
+      "type" : "object",
+      "properties" : {
+        "accidentDriverSeqNo" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "accidentType" : {
+          "type" : "string"
+        },
+        "amendmentSequenceNumber" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "anyoneInjured" : {
+          "type" : "string"
+        },
+        "claimDate" : {
+          "type" : "string"
+        },
+        "claimHistorySeqNo" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "claimLoss" : {
+          "type" : "string"
+        },
+        "claimNumber" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "claimType" : {
+          "type" : "string"
+        },
+        "claimValue" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "damageLevel" : {
+          "type" : "string"
+        },
+        "guiltyPartyCode" : {
+          "type" : "string"
+        },
+        "injuriesSerious" : {
+          "type" : "string"
+        },
+        "responsiblePersonSeqNo" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "addPerInsHstForVehRequest" : {
+      "type" : "object",
+      "properties" : {
+        "accidentDate" : {
+          "type" : "string"
+        },
+        "branchName" : {
+          "type" : "string"
+        },
+        "captureYearsNCB" : {
+          "type" : "string"
+        },
+        "companyBranch" : {
+          "type" : "string"
+        },
+        "companyCode" : {
+          "type" : "string"
+        },
+        "companyName" : {
+          "type" : "string"
+        },
+        "currentInsuredOption" : {
+          "type" : "string"
+        },
+        "stolenDate" : {
+          "type" : "string"
+        }
+      }
+    },
+    "endOfSaleRequest" : {
+      "type" : "object",
+      "properties" : {
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "additionalData" : {
+          "type" : "object"
+        }
+      }
+    },
+    "leadAccessCoverResponse" : {
+      "type" : "object",
+      "properties" : {
+        "leadAccessResponse" : {
+          "type" : "object",
+          "properties" : {
+            "unsuccessfulCode" : {
+              "type" : "string"
+            },
+            "unsuccessfulReason" : {
+              "type" : "string"
+            },
+            "success" : {
+              "type" : "string"
+            }
+          }
+        },
+        "leadCoverResponse" : {
+          "type" : "object",
+          "properties" : {
+            "referenceNumber" : {
+              "type" : "string"
+            },
+            "returnStatus" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "referalRequest" : {
+      "type" : "object",
+      "properties" : {
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "additionalDetail" : {
+          "type" : "object"
+        }
+      }
+    },
+    "quoteDetailsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "coverOptionsResponse" : {
+          "type" : "array",
+          "items" : {
+            "properties" : {
+              "linkedToVehicle" : {
+                "type" : "number"
+              },
+              "cover" : {
+                "type" : "string"
+              },
+              "premium" : {
+                "type" : "number"
+              },
+              "value" : {
+                "type" : "number"
+              }
+            }
+          }
+        },
+        "referralSummaryResponse" : {
+          "type" : "object",
+          "properties" : {
+            "aDetail" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "riskNumber" : {
+                    "type" : "number"
+                  },
+                  "riskType" : {
+                    "type" : "string"
+                  },
+                  "status" : {
+                    "type" : "string"
+                  },
+                  "underwritingDecision" : {
+                    "type" : "string"
+                  },
+                  "underwritingResult" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "emptyResponse" : {
+      "type" : "object"
+    },
+    "insurancedetailvalidResponse" : {
+      "type" : "object",
+      "properties" : {
+        "branchName" : {
+          "type" : "string"
+        },
+        "cancellationDate" : {
+          "type" : "string"
+        },
+        "cancellationReason" : {
+          "type" : "string"
+        },
+        "companyBranch" : {
+          "type" : "string"
+        },
+        "companyCode" : {
+          "type" : "string"
+        },
+        "companyName" : {
+          "type" : "string"
+        }
+      }
+    },
+    "claimhistorydatevalidResponse" : {
+      "type" : "object",
+      "properties" : {
+        "generalError" : {
+          "type" : "string"
+        }
+      }
+    },
+    "precautionlistResponse" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        }
+      }
+    },
+    "changeAdminFeeDateRequest" : {
+      "type" : "object",
+      "properties" : {
+        "referenceNumber" : {
+          "type" : "string"
+        },
+        "newStartDate" : {
+          "type" : "string"
+        }
+      }
+    },
+    "multiQuoteRequest" : {
+      "type" : "object",
+      "properties" : {
+        "brokerCode" : {
+          "type" : "string"
+        },
+        "financedYN" : {
+          "type" : "string",
+          "enum" : [ "Y", "N" ],
+          "default" : "Y"
+        },
+        "VDN" : {
+          "type" : "string"
+        },
+        "amount" : {
+          "type" : "string"
+        },
+        "hasHH" : {
+          "type" : "string"
+        },
+        "cashBackFlag" : {
+          "type" : "string",
+          "enum" : [ "CB", "NoCB" ],
+          "default" : "CB"
+        },
+        "SuburbSequeceNumber" : {
+          "type" : "string"
+        },
+        "vehicleKey" : {
+          "type" : "string"
+        },
+        "noClaimsDiscount" : {
+          "type" : "string"
+        },
+        "clientDateOfBirth" : {
+          "type" : "string"
+        },
+        "sexCode" : {
+          "type" : "string"
+        },
+        "licenseDate" : {
+          "type" : "string"
+        },
+        "riskType" : {
+          "type" : "string"
+        },
+        "coverTypeList" : {
+          "type" : "array",
+          "items" : {
+            "properties" : {
+              "coverType" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "webFlagList" : {
+          "type" : "array",
+          "items" : {
+            "properties" : {
+              "webFlag" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "multiQuoteResponse" : {
+      "type" : "array",
+      "items" : {
+        "properties" : {
+          "coverType" : {
+            "type" : "string"
+          },
+          "coverTypeOptions" : {
+            "type" : "object",
+            "properties" : {
+              "description" : {
+                "type" : "string"
+              },
+              "discountedPremium" : {
+                "type" : "number"
+              },
+              "standardPremium" : {
+                "type" : "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "antitheftResponse" : {
+      "type" : "object",
+      "properties" : {
+        "requirement" : {
+          "type" : "string"
+        },
+        "afields" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "code" : {
+                "type" : "string"
+              },
+              "desc" : {
+                "type" : "string"
+              },
+              "totalPremium" : {
+                "type" : "number"
+              },
+              "vehiclePremium" : {
+                "type" : "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "schemes" : [ "https" ],
+  "host" : "api-dev.isservices.co.za:7844"
+}
